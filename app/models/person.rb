@@ -52,7 +52,7 @@ class Person < ApplicationRecord
 
             a = Affiliation.where(name:affiliation_name ).first_or_create
             affiliation_list.push(a)
-            puts a.name
+            #puts a.name
         end
 
         person_location_str = input_hash["Location"]
@@ -70,7 +70,7 @@ class Person < ApplicationRecord
 
                 loc = Location.where(name:location_name).first_or_create
                 location_list.push(loc)
-                puts loc.name
+                #puts loc.name
             end
         end
         species = input_hash["Species"]
