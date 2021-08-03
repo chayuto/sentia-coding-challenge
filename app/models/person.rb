@@ -5,13 +5,19 @@ class Person < ApplicationRecord
     has_and_belongs_to_many :locations
 
 
-    def self.import(file)        
+    def self.import(file)   
+        valid_imports = []     
         CSV.foreach(file.path,headers: true) do |row|
+            
             
             puts row.to_h
             new_person = Person.import_row(row.to_h)
            
+            if new_person.present?
+                valid_imports.push(new_person)
+            end
         end
+        valid_imports
     end
 
     
@@ -39,6 +45,9 @@ class Person < ApplicationRecord
 
         affiliation_list = []
         affiliation_name_list.each do |input_affiliation_name|
+            if input_affiliation_name.blank?
+                next
+            end
             affiliation_name = input_affiliation_name.strip #trim white spaces
 
             a = Affiliation.where(name:affiliation_name ).first_or_create
@@ -46,17 +55,35 @@ class Person < ApplicationRecord
             puts a.name
         end
 
+        person_location_str = input_hash["Location"]
+        location_list = []
+        unless person_location_str.blank?
+            location_name_list = person_location_str.split(",")
+            
+            location_name_list.each do |input_location_name|
+
+                if input_location_name.blank?
+                    next
+                end
+                #trim white spaces and titleize
+                location_name = input_location_name.strip.titleize 
+
+                loc = Location.where(name:location_name).first_or_create
+                location_list.push(loc)
+                puts loc.name
+            end
+        end
         species = input_hash["Species"]
+        
         #from sample input, further valid processing is only applicable to "Human"
 
+
         if(species == "Human")
-            gender = PeopleHelper.map_gender(input_hash["Gender"])
-            puts gender
-            name_titles =  name.strip.split(" ")
+          
+            name_titles = input_hash["Name"].strip.split(" ")
             first_name = name_titles[0]&.titleize
             last_name =  name_titles[1]&.titleize
         else
-            gender =input_hash["Gender"] 
             first_name = input_hash["Name"]
             last_name = nil 
         end
@@ -65,12 +92,20 @@ class Person < ApplicationRecord
             first_name:first_name,
             last_name:last_name,
             species:species,
-            gender:gender,
+            gender:PeopleHelper.map_gender(input_hash["Gender"]),
             weapon:input_hash["Weapon"],
             vehicle:input_hash["Vehicle"])
 
         new_person.affiliations <<  affiliation_list
+        new_person.locations <<  location_list
 
-        new_person.save
+        if(new_person.save)
+            return new_person
+        else
+            return nil
+        end
+
     end
+
+    
 end
