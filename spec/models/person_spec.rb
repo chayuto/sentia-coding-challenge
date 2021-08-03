@@ -17,9 +17,20 @@ RSpec.describe Person, type: :model do
       weapon:"-",
       vehicle:"BMW")
     expect(Person.count).to eq 1
-    
+
   end
 
 
+  it "should import new row with hash #1" do
+
+  expect(Person.count).to eq 0
+
+  input_hash = {"Name"=>"Chewbacca", "Location"=>"kashyyk", "Species"=>"Wookie", "Gender"=>"m", "Affiliations"=>"Rebel Alliance", "Weapon"=>"Bowcaster", "Vehicle"=>"Millennium Falcon"}
+
+  Person.import_row(input_hash)
+
+  expect(Person.count).to eq 1
+
+  end
 
 end
