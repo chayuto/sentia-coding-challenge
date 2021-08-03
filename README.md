@@ -42,10 +42,12 @@ results
 * Configuration
 
 * Database creation
+Many-to-Many Relationship
 
 * Database initialization
 
 * How to run the test suite
+Rspec
 
 * Services (job queues, cache servers, search engines, etc.)
 
