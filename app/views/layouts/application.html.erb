@@ -3,6 +3,8 @@
   <head>
     <title>Sentia</title>
     <%= csrf_meta_tags %>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
@@ -10,5 +12,14 @@
 
   <body>
     <%= yield %>
+
+    <footer class="footer">
+    <div class="container">
+      <span class="text-muted" style="color: rgba(31, 55, 86, 1);">© Chayut orapinpatipat. 2021</span>
+    </div>
+    </footer>
+
   </body>
+
+  
 </html>

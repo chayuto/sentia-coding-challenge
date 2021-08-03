@@ -1,34 +1,80 @@
 <p id="notice"><%= notice %></p>
 
-<h1>People</h1>
+<h1>People of Starwars</h1>
 
 
-<div>
-  <h4>Import data!</h4>
+<div class="flex-container">
+  <h4>Import data from CSV</h4>
   <%= form_tag import_people_path, multipart:true do %>
     <%= file_field_tag :file %>
     <%= submit_tag "Import from file" %>
   <% end %>
 </div>
 
-<table>
-  <thead>
-    <tr>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+  <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+        <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+            <table id="dtPeople" class="display table table-striped table-bordered table-sm" cellspacing="0" width="100%" data-turbolinks="false">
+              <thead>
+                <tr>
+                  <th class="th-sm">First Name
+                  </th>
+                  <th class="th-sm">Last Name
+                  </th>
+                  <th class="th-sm">Location
+                  </th>
+                  <th class="th-sm">Species
+                  </th>
+                  <th class="th-sm">Gender
+                  </th>
+                  <th class="th-sm">Affiliation
+                  </th>
+                  <th class="th-sm">Weapon
+                  </th>
+                  <th class="th-sm">Vehicle
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @people.each do |person| %>
+                  <tr>
+                    <td><%= person.first_name %></td>
+                    <td><%= person.last_name %></td>
+                    <td><%= person.locations.pluck(:name).reject(&:blank?).join(', ') %></td>
+                    <td><%= person.species %></td>
+                    <td><%= person.gender %></td>
+                    <td><%= person.affiliations.pluck(:name).reject(&:blank?).join(', ') %></td>
+                    <td><%= person.weapon %></td>
+                    <td><%= person.vehicle %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th class="th-sm">First Name
+                  </th>
+                  <th class="th-sm">Last Name
+                  </th>
+                  <th class="th-sm">Location
+                  </th>
+                  <th class="th-sm">Species
+                  </th>
+                  <th class="th-sm">Gender
+                  </th>
+                  <th class="th-sm">Affiliation
+                  </th>
+                  <th class="th-sm">Weapon
+                  </th>
+                  <th class="th-sm">Vehicle
+                  </th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+    </div>
+  </div>
 
-  <tbody>
-    <% @people.each do |person| %>
-      <tr>
-        <td><%= link_to 'Show', person %></td>
-        <td><%= link_to 'Edit', edit_person_path(person) %></td>
-        <td><%= link_to 'Destroy', person, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
 
 <br>
 
-<%= link_to 'New Person', new_person_path %>
